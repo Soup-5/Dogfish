@@ -1,0 +1,17 @@
+# Jenga Lang Grammar (Main Idea: values of vars are placed in a jenga tower that, if collapses, crashes the program)
+PROGRAM :== { DECLARATION } EOF
+DECLARATION :== DROP '\n' | STATEMENT '\n'
+DROP :== 'drop' EXPRSTMT 'in' 'row' EXPRSTMT
+STATEMENT :== GETSTMT | LOOPSTMT | IFSTMT | EXPRSTMT | PRINTSTMT
+GETSTMT :== 'get' '['EXPRSTMT','EXPRSTMT']'
+LOOPSTMT :== 'loop''('EXPRSTMT')''\n''\t'STATEMENT
+IFSTMT :== 'if''('EXPRSTMT')''\n''\t'STATEMENT
+PRINTSTMT :== 'print' EXPRSTMT
+EXPRSTMT :== LOGIC_OR
+LOGIC_OR :== LOGIC_AND { 'or' LOGIC_AND }
+LOGIC_AND :== EQUALITY { 'and' EQUALITY }
+EQUALITY :== TERM { [ '>' | '==' | '<' ] TERM }
+TERM :== FACTOR { [ '+' | '-' ] FACTOR }
+FACTOR :== UNARY { [ '*' | '/' ] UNARY }
+UNARY :== [ '!' | '-' ] UNARY | PRIMITIVE
+PRIMITIVE :== NUMBER | STRING
